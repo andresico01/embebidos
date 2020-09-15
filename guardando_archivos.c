@@ -1,5 +1,7 @@
+
 #include<stdio.h>
 #include<stdlib.h>
+#include<math.h>
 
 typedef struct{
     char nombre[20];
@@ -18,7 +20,7 @@ typedef struct{
 }contando_ando;*/
 
 personas pasando_lista(unsigned char* datos);           //con esto paso los datos de texto plano a los valores que guarda mi estructura persona 
-int cargando_datos(char valor[]);                       // una cochinada quwe hice por salir del paso por que ya tenia sueño, cambialo mas tardesito.
+int cargando_datos(char valor[],int iterador_j);                       // una cochinada que hice por salir del paso por que ya tenia sueño, cambialo mas tardesito.
 void debbugeando_madres(char vector[]);                 //con esta funcion lleno de \0 o valor null los vectores y matrices pertenecientes a mi estructura personas 
 int main (){
     FILE* archivo = fopen("pal profe.txt","rt");
@@ -44,13 +46,13 @@ int main (){
             }
         i++;
     }
-    *(unidad+0) = pasando_lista(contenido);                 // esto posiblemente no lo use, solo tenia la idea de pasar un vecotro dinamico de mi tipo de datos persona
-    printf("\n%s\n",(unidad+0)->nombre);                    // para asi asiganarl los valores mas rapido a mi lista en mi funcion principal, esto es un borrador. por asi
+    *(unidad+0) = pasando_lista(contenido);                 // esto posiblemente no lo use, solo tenia la idea de pasar un vector dinamico de mi tipo de datos persona
+    printf("\n%s\n",(unidad+0)->estudiantes[2]);                    // para asi asiganarl los valores mas rapido a mi lista en mi funcion principal, esto es un borrador. por asi
     //printf("\n%d\n",fseek(archivo,11,SEEK_SET));          //decirlo la idea es hacer una libreria que me contenga las funciones que hecho aqui, asi como hice una 
    // printf("%d\t%d\n",j[0],j[1]);                         //libreria para trabajar con listas. 
     
     free(contenido);
-    fclose(archivo);
+    fclose(archivo);                
     return EXIT_SUCCESS;
 }
 personas pasando_lista(unsigned char* datos){
@@ -58,104 +60,113 @@ personas pasando_lista(unsigned char* datos){
     int* vec_2 = malloc(sizeof(int));           // mismo que lo de arriba, pero aja. 
     int cont = 0;
     int cont_3 = 0;
-    char valor[]="  ", valor_2[]="  ";
-    int i = 0, j = 0, k = 0,p=0,o=0;            
+    char valor[]="   ", valor_2[]="   ";
+    int iterador_i = 0, iterador_j = 0, iterador_k = 0, iterador_p=0,iterador_o=0;            
     personas gente;
     debbugeando_madres(gente.nombre);
     debbugeando_madres(gente.apellido);
 
 //    contando_ando contador;
-    while (*(datos+i) != 16 ){
-        if (*(datos+i) == ':'){
+    while (*(datos+iterador_i) != '}' ){
+        if (*(datos+iterador_i) == ':'){
     
-            *(vec+cont) = i+1;
-          //  printf(": %d\t",*(vec+cont));
+            *(vec+cont) = iterador_i+1;
+           // printf(": %d\t",*(vec+cont));
             cont++;
-        }else if(*(datos+i) == '}'){ // esto debo cambairlo esta deberia ser la condicioen del while, recuerdalo pa mas tarde 
+        }/*else if(*(datos+i) == '}'){ // esto debo cambiarlo esta deberia ser la condicioen del while, recuerdalo pa mas tarde 
             //printf("\nfinalizo con una persona\n");
             break;
-        }else if(*(datos+i) == ','){
-            *(vec_2+cont_3) = i-1;
-          //  printf(", %d\t",*(vec_2+cont_3));
+        }*/else if(*(datos+iterador_i) == ','){
+            *(vec_2+cont_3) = iterador_i-1;
+            //printf(", %d\t",*(vec_2+cont_3));
             cont_3++;
         }
-        p++;
-        i++;                                        //posicion final del contenido de texto.
+        iterador_p++;
+        iterador_i++;                                        //posicion final del contenido de texto.
     }   
+    *(vec_2+0) = 18;
+    *(vec_2+6) = iterador_p-2;
+    *(vec+4) = 73;
     //fflush(stdin);
-    //for(k=0;k<cont_3;k++)printf("%d\t",*(vec_2+k));
-    k=0;
-    for (j = *(vec+0)+1 ;j < 18;j++ ){
-        gente.nombre[k] = *(datos+(*(vec+0)+1)+k);      //aqui uso los vectores dinamicos que guardan posiciones para sacar la info que requiero.
-        k++;
+   /* printf("\n");
+    for(k=0;k<=cont_3;k++)printf("%d\t",*(vec_2+k));
+    printf("\n");
+    for(k=0;k<cont;k++)printf("%d\t",*(vec+k));
+    */
+    iterador_k=0;
+    for (iterador_j = *(vec+0)+1 ;iterador_j < *(vec_2+0);iterador_j++ ){
+        gente.nombre[iterador_k] = *(datos+(*(vec+0)+1)+iterador_k);      //aqui uso los vectores dinamicos que guardan posiciones para sacar la info que requiero.
+        iterador_k++;
     }
-    k = 0;
-    for (j = *(vec+1 )+1; j < *(vec_2+1);j++ ){
-        gente.apellido[k]= *(datos+(*(vec+1)+1)+k);
+    iterador_k = 0;
+    for (iterador_j = *(vec+1 )+1; iterador_j < *(vec_2+1);iterador_j++ ){
+        gente.apellido[iterador_k]= *(datos+(*(vec+1)+1)+iterador_k);
        // printf("%c",*(datos+(32+k)));
-        k++;
+        iterador_k++;
     }
-    k=0;
-    for (j = *(vec + 2 ) ;j <= *(vec_2 + 2);j++ ){
-        valor[k] = *(datos+(*(vec+2))+k);
-        k++;
+    iterador_k=0;
+    for (iterador_j = *(vec + 2 ) ;iterador_j <= *(vec_2 + 2);iterador_j++ ){
+        valor[iterador_k] = *(datos+(*(vec+2))+iterador_k);
+        iterador_k++;
     }
-    k=0;
-    for (j = *(vec + 3 ) ;j <= *(vec_2 + 3);j++ ){
-        valor_2[k] = *(datos+(*(vec+3))+k);
-        k++;
+    gente.edad = cargando_datos(valor,iterador_k);
+    iterador_k=0;
+    for (iterador_j = *(vec + 3 ) ;iterador_j <= *(vec_2 + 3);iterador_j++ ){
+        valor_2[iterador_k] = *(datos+(*(vec+3))+iterador_k);
+        iterador_k++;
     }
-
+    gente.peso = cargando_datos(valor_2,iterador_k);
+    //printf("\n%d\n",k);
   //printf("\nbello %d\t %d\n",*(vec_2+0),*(vec+1));
    // printf("\n%s\n",gente.nombre);
    // printf("\n%s\n",gente.apellido);
-   // printf("\n%s\n",valor);
-    gente.edad = cargando_datos(valor);
-   // printf("\n%d\n",gente.edad);
+  //  printf("\n%s\n",valor);
+    //printf("\n%d\n",gente.edad);
   //  printf("\n%s\n",valor_2);
-    gente.peso = cargando_datos(valor_2);
     //printf("\n%d\n",gente.peso);
-    k=0;
-    j=0;
-    i = *(vec+4);
-    while (*(datos+i+k) != '}' ){      /// con esto saco las filas de la matriz que contendran los nombres de mis estudientes. la inilializo ahi para que sea
-        if (*(datos+i+k) == ',')j++;   /// mas "rapido"
-        k++;
+    iterador_k=0;
+    iterador_j=0;
+    iterador_i = *(vec+4);
+   // printf("\n%c\n",(datos+*(vec+4)+1));
+    while (*(datos+iterador_i+iterador_k) != '}' ){      /// con esto saco las filas de la matriz que contendran los nombres de mis estudientes. la inilializo ahi para que sea
+        if (*(datos+iterador_i+iterador_k) == ',')iterador_j++;   /// mas "rapido"
+        iterador_k++;
     }
-    //printf("\n%d\n",j);
-    for(int contando = 0;contando <=j ;contando++){
+   // printf("\n%d\n",j);
+    for(int contando = 0;contando <=iterador_j ;contando++){
         debbugeando_madres(gente.estudiantes[contando]);
     }
-    gente.numero_estudiantes = j+1;
-    i=0;
-    k=0;
-    for(k=75; k < 80;k++){
-        gente.estudiantes[0][o] = *(datos+75+o);
-         o++;
+    gente.numero_estudiantes = iterador_j+1;
+    iterador_i=0;
+    iterador_k=0;
+    for(iterador_k=*(vec+4); iterador_k < *(vec_2+4)-2;iterador_k++){
+        gente.estudiantes[0][iterador_o] = *(datos+*(vec+4)+iterador_o);
+         iterador_o++;
     }
-    o=0;
+    iterador_o=0;
     //printf("\n%d\n",j);
-   for(i = 1;i < j;i++){
-        for(k=*(vec_2+3+i)+1; k <*(vec_2+4+i)-2;k++){
-            gente.estudiantes[i][o] = *(datos+*(vec_2+3+i)+3+o);
-            o++;
+   for(iterador_i = 1;iterador_i <= iterador_j;iterador_i++){
+        for(iterador_k=*(vec_2+3+iterador_i)+1; iterador_k <*(vec_2+4+iterador_i)-2;iterador_k++){
+            gente.estudiantes[iterador_i][iterador_o] = *(datos+*(vec_2+3+iterador_i)+3+iterador_o);
+            iterador_o++;
             //printf("%d\t",k);
         }
-        o=0;
+        iterador_o=0;
     }
     
-   // for(i=0;i<j;i++)printf("\n%s\n",gente.estudiantes[i]);
+    //for(i=0;i<j;i++)printf("\n%s\n",gente.estudiantes[i]);
    //printf("\n%s\n",gente.estudiantes[0]);
    return gente;
 
 }
-int cargando_datos(char valor[]){
-    int j=0,k=0;
-    int aux = 0;
-    aux = valor[0]-'0';
-    aux *= 10;
-    aux += valor[1]-'0';
-    return aux;
+int cargando_datos(char valor[],int iterador_j){
+    int iterador_k=0;
+    int auxiliar = 0;
+    for(iterador_k = iterador_j-1;iterador_k >= 0;iterador_k--){
+        auxiliar += ((valor[(iterador_j-1)-iterador_k]-'0')*pow(10,iterador_k));
+    }
+    
+    return auxiliar;
 }
 void debbugeando_madres(char vector[]){
     for(int i = 0;i <= 20;i++)vector[i] = '\0';
