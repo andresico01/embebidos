@@ -1,18 +1,20 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+typedef char string[20];
 typedef struct{
-    char nombre[20];
-    char apellido[20];
+    string nombre;
+    string apellido;
     int edad;
     int peso;
     int numero_estudiantes;
-    char estudiantes[10][20];
+    string estudiantes[10];
 }personas;
 void pasando_datos(char* datos, int posicion_0, int posicion_final,char string[]);
 personas pasando_lista(unsigned char* datos,int posicion);           //con esto paso los datos de texto plano a los valores que guarda mi estructura persona 
 int cargando_datos(char valor[],int iterador_j);                       // una cochinada que hice por salir del paso por que ya tenia sueño, cambialo mas tardesito.
-void debbugeando_madres(char vector[]);                 //con esta funcion lleno de \0 o valor null los vectores y matrices pertenecientes a mi estructura personas 
+void debbugeando_madres(char vector[]);     
+void eliminar_vector(int* vec,int cont_3);            //con esta funcion lleno de \0 o valor null los vectores y matrices pertenecientes a mi estructura personas 
 int main (){
     FILE* archivo = fopen("pal profe.txt","rt");
     size_t tamano;
@@ -40,7 +42,7 @@ int main (){
     //printf("\n%d\n",k);
    // for(int contar = 0;contar < k;contar++ ){
     *(unidad+0) = pasando_lista(contenido,j[0]);
-    printf("\n%s\t%s\t%s\n",(unidad+0)->apellido,(unidad+0)->estudiantes[1],(unidad+0)->estudiantes[2]);                    // para asi asiganarl los valores mas rapido a mi lista en mi funcion principal, esto es un borrador. por asi
+    printf("\n%s\t%s\t%s\n",(unidad+0)->estudiantes[0],(unidad+0)->estudiantes[1],(unidad+0)->estudiantes[2]);                    // para asi asiganarl los valores mas rapido a mi lista en mi funcion principal, esto es un borrador. por asi
    
    printf("\n%d\t%d\n",(unidad+0)->edad,(unidad+0)->peso);
                                                              // esto posiblemente no lo use, solo tenia la idea de pasar un vector dinamico de mi tipo de datos persona
@@ -105,20 +107,11 @@ personas pasando_lista(unsigned char* datos, int posicion){
     gente.numero_estudiantes = iterador_j+1;
     iterador_i=0;
     iterador_k=0;
- 
-    for(iterador_k=vec[4]+2; iterador_k < *(vec_2+4);iterador_k++){
-        gente.estudiantes[0][iterador_o] = *(datos+iterador_k);
-         iterador_o++;
-    }
-    iterador_o=0;
-   
+    pasando_datos(datos,vec[4]+1,*(vec_2+4),gente.estudiantes[0]);
    for(iterador_i = 1;iterador_i <= iterador_j;iterador_i++){
-        for(iterador_k=*(vec_2+3+iterador_i)+1; iterador_k <*(vec_2+4+iterador_i)-2;iterador_k++){
-            gente.estudiantes[iterador_i][iterador_o] = *(datos+iterador_k+2);
-            iterador_o++;
-        }
-        iterador_o=0;
+       pasando_datos(datos,*(vec_2+3+iterador_i)+2,*(vec_2+4+iterador_i),gente.estudiantes[iterador_i]);
     }
+   eliminar_vector(vec_2,cont_3);
    return gente;
 }
 void pasando_datos(char* datos, int posicion_0, int posicion_final,char string[]){
@@ -138,4 +131,10 @@ int cargando_datos(char valor[],int iterador_j){
 }
 void debbugeando_madres(char vector[]){
     for(int i = 0;i <= 20;i++)vector[i] = '\0';
+}
+void eliminar_vector(int* vec, int cont_3){
+    while((cont_3+1) != 0){
+        *(vec+cont_3) = NULL;
+        cont_3--;
+    }
 }
