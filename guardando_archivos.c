@@ -14,7 +14,8 @@ void pasando_datos(char* datos, int posicion_0, int posicion_final,char string[]
 personas pasando_lista(unsigned char* datos,int posicion);           //con esto paso los datos de texto plano a los valores que guarda mi estructura persona 
 int cargando_datos(char valor[],int iterador_j);                       // una cochinada que hice por salir del paso por que ya tenia sueño, cambialo mas tardesito.
 void debbugeando_madres(char vector[]);     
-void eliminar_vector(int* vec,int cont_3);            //con esta funcion lleno de \0 o valor null los vectores y matrices pertenecientes a mi estructura personas 
+void eliminar_vector(int* vec,int cont_3);  
+void inicio_posiciones(int vec[], unsigned char* datos);          //con esta funcion lleno de \0 o valor null los vectores y matrices pertenecientes a mi estructura personas 
 int main (){
     FILE* archivo = fopen("pal profe.txt","rt");
     size_t tamano;
@@ -32,23 +33,15 @@ int main (){
     fread(contenido, sizeof(char), tamano, archivo);        //ingreso en un vector dinamico tipo char todos los  datos del texto plano
 
     printf("contenido : \n%s\n",contenido);
-    while(*(contenido+i) != '\0'){
-        if (*(contenido+i) == '{'){
-            j[k] =i;                    //vector que registra la terminacion de cada grupo o bloque ne mi texto plano
-            k++;
-            }
-        i++;
-    }
-    //printf("\n%d\n",k);
+    inicio_posiciones(j,contenido);
    // for(int contar = 0;contar < k;contar++ ){
     *(unidad+0) = pasando_lista(contenido,j[0]);
     printf("\n%s\t%s\t%s\n",(unidad+0)->estudiantes[0],(unidad+0)->estudiantes[1],(unidad+0)->estudiantes[2]);                    // para asi asiganarl los valores mas rapido a mi lista en mi funcion principal, esto es un borrador. por asi
    
    printf("\n%d\t%d\n",(unidad+0)->edad,(unidad+0)->peso);
-                                                             // esto posiblemente no lo use, solo tenia la idea de pasar un vector dinamico de mi tipo de datos persona
-                                                            //decirlo la idea es hacer una libreria que me contenga las funciones que hecho aqui, asi como hice una 
-    printf("%d\t%d\n",j[0],j[1]);                         //libreria para trabajar con listas. 
-    
+                                                             
+    printf("%d\t%d\n",j[0],j[1]);                        
+   
     free(contenido);
     fclose(archivo);                
     return EXIT_SUCCESS;
@@ -137,4 +130,15 @@ void eliminar_vector(int* vec, int cont_3){
         *(vec+cont_3) = NULL;
         cont_3--;
     }
+}
+void inicio_posiciones(int vec[], unsigned char* datos){
+    int k = 0, i = 0;
+    while(*(datos+i) != '\0'){
+        if (*(datos+i) == '{'){
+            vec[k] =i;                    //vector que registra la terminacion de cada grupo o bloque ne mi texto plano
+            k++;
+            }
+        i++;
+    }
+
 }
