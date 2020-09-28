@@ -4,7 +4,7 @@
 
 int main (){
     //personas g = ingreso_datos();
-    FILE* archivo = fopen("archivo.json","r+t");
+    FILE* archivo = fopen("archivos.json","r+t");
     size_t tamano;
     personas grupo;
     
